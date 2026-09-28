@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicFix - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>CivicFix</h1>
+    <p>Admin Complaint Dashboard</p>
+</header>
+
+<main>
+
+    <h2>All Complaints</h2>
+    <label for="priorityFilter"><strong>Filter by Priority:</strong></label>
+
+<select id="priorityFilter" onchange="filterComplaints()">
+    <option value="ALL">All</option>
+    <option value="HIGH">High</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="LOW">Low</option>
+</select>
+
+    <div id="complaints-container">
+        Loading complaints...
+    </div>
+
+</main>
+
+<script>
+
+fetch("/api/complaints")
+    .then(response => response.json())
+    .then(complaints => {
+
+        const container = document.getElementById("complaints-container");
+
+        container.innerHTML = "";
+
+        complaints
+    .sort((a, b) => b.priorityScore - a.priorityScore)
+    .forEach(complaint =>  {
+
+            const card = document.createElement("div");
+
+           card.innerHTML = `
+    <h3>${complaint.title}</h3>
+    <p><strong>Category:</strong> ${complaint.category}</p>
+    <p><strong>Description:</strong> ${complaint.description}</p>
+    <p><strong>Location:</strong> ${complaint.location}</p>
+    <p><strong>Severity:</strong> ${complaint.severity}</p>
+    <p><strong>Priority Score:</strong> ${complaint.priorityScore}</p>
+<p><strong>Priority:</strong> ${complaint.priority}</p>
+
+
+    <p>
+        <strong>Status:</strong>
+        <select onchange="updateStatus(${complaint.id}, this.value)">
+            <option value="NEW" ${complaint.status === "NEW" ? "selected" : ""}>NEW</option>
+            <option value="ASSIGNED" ${complaint.status === "ASSIGNED" ? "selected" : ""}>ASSIGNED</option>
+            <option value="IN PROGRESS" ${complaint.status === "IN PROGRESS" ? "selected" : ""}>IN PROGRESS</option>
+            <option value="RESOLVED" ${complaint.status === "RESOLVED" ? "selected" : ""}>RESOLVED</option>
+        </select>
+    </p>
+`;
+
+            container.appendChild(card);
+        });
+
+    })
+    .catch(error => {
+        document.getElementById("complaints-container").innerHTML =
+            "Unable to load complaints.";
+        console.error(error);
+    });
+    function updateStatus(id, status) {
+    fetch(`/api/complaints/${id}/status?status=${status}`, {
+        method: "POST"
+    })
+    .then(response => response.text())
+    .then(message => {
+        alert(message);
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Failed to update status");
+    });
+}
+
+</script>
+
+</body>
+</html>

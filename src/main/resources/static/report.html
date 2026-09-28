@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicFix - Report an Issue</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>CivicFix</h1>
+        <p>Smart Complaint Management System</p>
+    </header>
+
+    <main>
+        <h2>Report a Civic Issue</h2>
+
+        <form action="/submit-complaint" method="post">
+
+    <label for="title">Issue Title</label>
+    <input type="text" id="title" name="title"
+           placeholder="Example: Pothole on main road">
+
+    <label for="category">Category</label>
+    <select id="category" name="category">
+        <option value="">Select Category</option>
+        <option>Road Damage</option>
+        <option>Garbage</option>
+        <option>Water Supply</option>
+        <option>Street Light</option>
+        <option>Drainage</option>
+        <option>Other</option>
+    </select>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description"
+              placeholder="Describe the issue"></textarea>
+
+    <label for="location">Location</label>
+    <input type="text" id="location" name="location"
+           placeholder="Enter location">
+
+    <label for="severity">Severity</label>
+    <select id="severity" name="severity">
+        <option value="">Select Severity</option>
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+        <option>Critical</option>
+    </select>
+
+    <button type="submit">Submit Complaint</button>
+
+</form>
+
+    </main>
+
+</body>
+</html>

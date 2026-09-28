@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicFix - Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>CivicFix</h1>
+    <p>User Profile</p>
+</header>
+
+<main>
+
+    <h2>My Profile</h2>
+
+    <div class="profile-card">
+
+        <p>
+            <strong>Name:</strong>
+            <span id="profile-name">User</span>
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            <span id="profile-email">Not available</span>
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            <span id="profile-phone">Not available</span>
+        </p>
+
+    </div>
+
+    <p>
+        <a href="dashboard.html">Back to Dashboard</a>
+    </p>
+
+</main>
+<script>
+fetch("/api/profile")
+    .then(response => response.json())
+    .then(user => {
+
+        if (!user) {
+            alert("Please login first.");
+            return;
+        }
+
+        document.getElementById("profile-name").textContent =
+            user.fullName;
+
+        document.getElementById("profile-email").textContent =
+            user.email;
+
+        document.getElementById("profile-phone").textContent =
+            user.phone;
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Unable to load profile.");
+    });
+</script>
+
+</body>
+</html>
